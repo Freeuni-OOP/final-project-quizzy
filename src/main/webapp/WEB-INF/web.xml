@@ -10,4 +10,46 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!-- ===== M4 Admin ===== -->
+
+    <!-- Admin Authorization Filter -->
+    <filter>
+        <filter-name>AdminAuthorizationFilter</filter-name>
+        <filter-class>quizzy.filter.AdminAuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminAuthorizationFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Admin Dashboard -->
+    <servlet>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <servlet-class>quizzy.admin.AdminDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <url-pattern>/admin/</url-pattern>
+    </servlet-mapping>
+
+    <!-- Announcements CRUD -->
+    <servlet>
+        <servlet-name>AnnouncementServlet</servlet-name>
+        <servlet-class>quizzy.admin.AnnouncementServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnouncementServlet</servlet-name>
+        <url-pattern>/admin/announcements</url-pattern>
+    </servlet-mapping>
+
+    <!-- Moderation Actions -->
+    <servlet>
+        <servlet-name>ModerationServlet</servlet-name>
+        <servlet-class>quizzy.admin.ModerationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ModerationServlet</servlet-name>
+        <url-pattern>/admin/moderation</url-pattern>
+    </servlet-mapping>
+
 </web-app>

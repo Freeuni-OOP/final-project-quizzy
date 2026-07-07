@@ -44,11 +44,25 @@ public class Announcement {
      * @param content   the announcement body text
      */
     public Announcement(int id, int creatorId, String title, String content) {
+        this(id, creatorId, title, content, LocalDateTime.now());
+    }
+
+    /**
+     * Constructs an Announcement with an explicit creation timestamp.
+     * Used when updating an existing announcement to preserve the original time.
+     *
+     * @param id        the database-assigned ID
+     * @param creatorId the ID of the admin who created this announcement
+     * @param title     the announcement headline
+     * @param content   the announcement body text
+     * @param createdAt the original creation timestamp
+     */
+    public Announcement(int id, int creatorId, String title, String content, LocalDateTime createdAt) {
         this.id = id;
         this.creatorId = creatorId;
         this.title = title;
         this.content = content;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
     }
 
     public int getId() {
