@@ -1,18 +1,52 @@
 package quizzy.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "quizzes")
 public class Quiz {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int creatorId;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id", nullable = false)
+    private User creator;
+
+    @Column(nullable = false, length = 100)
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "random_questions", nullable = false)
     private boolean randomQuestions;
+
+    @Column(name = "one_page", nullable = false)
     private boolean onePage;
+
+    @Column(name = "immediate_correction", nullable = false)
     private boolean immediateCorrection;
+
+    @Column(name = "practice_mode", nullable = false)
     private boolean practiceMode;
 
-    public Quiz(int id, int creatorId, String title, String description, boolean randomQuestions, boolean onePage, boolean immediateCorrection, boolean practiceMode) {
+    protected Quiz() {
+    }
+
+    public Quiz(int id, User creator, String title, String description,
+                boolean randomQuestions, boolean onePage,
+                boolean immediateCorrection, boolean practiceMode) {
         this.id = id;
-        this.creatorId = creatorId;
+        this.creator = creator;
         this.title = title;
         this.description = description;
         this.randomQuestions = randomQuestions;
@@ -25,8 +59,12 @@ public class Quiz {
         return id;
     }
 
+    public User getCreator() {
+        return creator;
+    }
+
     public int getCreatorId() {
-        return creatorId;
+        return creator.getId();
     }
 
     public String getTitle() {
