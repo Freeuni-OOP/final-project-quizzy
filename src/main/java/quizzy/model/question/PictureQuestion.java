@@ -1,12 +1,25 @@
 package quizzy.model.question;
 
-import java.util.ArrayList;
+import quizzy.model.Quiz;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import java.util.List;
+
+@Entity
+@DiscriminatorValue("PICTURE_RESPONSE")
 public class PictureQuestion extends TextQuestion {
+
+    @Column(name = "image_url", columnDefinition = "TEXT")
     private String imageUrl;
 
-    public PictureQuestion(int id, int quizId, String prompt, String imageUrl, ArrayList<String> correctAnswers) {
-        super(id, quizId, prompt, correctAnswers);
+    protected PictureQuestion() {
+    }
+
+    public PictureQuestion(int id, Quiz quiz, String prompt, String imageUrl,
+                           int questionOrder, List<String> correctAnswers) {
+        super(id, quiz, prompt, questionOrder, correctAnswers);
         this.imageUrl = imageUrl;
     }
 

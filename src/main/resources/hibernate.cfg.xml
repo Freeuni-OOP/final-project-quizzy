@@ -35,5 +35,12 @@
         <mapping class="quizzy.model.Announcement"/>
         <mapping class="quizzy.model.UserAchievement"/>
         <mapping class="quizzy.model.ReportedQuiz"/>
+
+        <mapping class="quizzy.model.question.Question"/>
+        <mapping class="quizzy.model.question.TextQuestion"/>
+        <mapping class="quizzy.model.question.FillBlankQuestion"/>
+        <mapping class="quizzy.model.question.MultipleChoiceQuestion"/>
+        <mapping class="quizzy.model.question.PictureQuestion"/>
+        <mapping class="quizzy.model.question.Answer"/>
     </session-factory>
 </hibernate-configuration>

@@ -1,11 +1,20 @@
 package quizzy.model.question;
 
-import java.util.ArrayList;
+import quizzy.model.Quiz;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import java.util.List;
+
+@Entity
+@DiscriminatorValue("FILL_BLANK")
 public class FillBlankQuestion extends TextQuestion {
 
-    public FillBlankQuestion(int id, int quizId, String prompt, ArrayList<String> correctAnswers) {
-        super(id, quizId, prompt, correctAnswers);
+    protected FillBlankQuestion() {
+    }
+
+    public FillBlankQuestion(int id, Quiz quiz, String prompt, int questionOrder, List<String> correctAnswers) {
+        super(id, quiz, prompt, questionOrder, correctAnswers);
     }
 
     @Override

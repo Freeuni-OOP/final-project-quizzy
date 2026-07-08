@@ -1,23 +1,46 @@
 package quizzy.model.question;
 
+import quizzy.model.Quiz;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@DiscriminatorValue("MULTIPLE_CHOICE")
 public class MultipleChoiceQuestion extends Question {
-    private ArrayList<String> choices;
-    private String correctAnswer;
 
-    public MultipleChoiceQuestion(int id, int quizId, String prompt, ArrayList<String> choices, String correctAnswer) {
-        super(id, quizId, prompt);
-        this.choices = choices;
-        this.correctAnswer = correctAnswer;
+    protected MultipleChoiceQuestion() {
+    }
+
+    public MultipleChoiceQuestion(int id, Quiz quiz, String prompt, int questionOrder,
+                                  List<String> choices, String correctAnswer) {
+        super(id, quiz, prompt, questionOrder);
+
+        for (String choice : choices) {
+            addAnswer(new Answer(0, choice, normalize(choice).equals(normalize(correctAnswer))));
+        }
     }
 
     public ArrayList<String> getChoices() {
+        ArrayList<String> choices = new ArrayList<>();
+
+        for (Answer answer : getAnswers()) {
+            choices.add(answer.getAnswerText());
+        }
+
         return choices;
     }
 
     public String getCorrectAnswer() {
-        return correctAnswer;
+        for (Answer answer : getAnswers()) {
+            if (answer.isCorrect()) {
+                return answer.getAnswerText();
+            }
+        }
+
+        return "";
     }
 
     @Override
@@ -32,7 +55,7 @@ public class MultipleChoiceQuestion extends Question {
 
     @Override
     public int grade(String answer) {
-        if (normalize(answer).equals(normalize(correctAnswer))) {
+        if (normalize(answer).equals(normalize(getCorrectAnswer()))) {
             return 1;
         }
 
