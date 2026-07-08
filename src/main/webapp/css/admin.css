@@ -1,0 +1,291 @@
+/* ===== Admin Layout ===== */
+
+.admin-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #222;
+}
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.admin-header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+/* ===== Buttons & Links ===== */
+
+.btn-link {
+    color: #555;
+    text-decoration: none;
+    font-size: 0.95em;
+}
+
+.btn-link:hover {
+    color: #222;
+    text-decoration: underline;
+}
+
+.btn-primary,
+.btn-danger,
+.btn-approve,
+.btn-edit,
+.btn-cancel {
+    display: inline-block;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+}
+
+.btn-approve {
+    background: #16a34a;
+    color: #fff;
+}
+
+.btn-approve:hover {
+    background: #15803d;
+}
+
+.btn-edit {
+    background: #f59e0b;
+    color: #fff;
+}
+
+.btn-edit:hover {
+    background: #d97706;
+}
+
+.btn-cancel {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.btn-cancel:hover {
+    background: #d1d5db;
+}
+
+/* ===== Admin Navigation Cards (Dashboard) ===== */
+
+.admin-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.admin-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.admin-card h2 {
+    margin: 0 0 8px 0;
+    font-size: 1.2em;
+}
+
+.admin-card p {
+    margin: 0 0 16px 0;
+    color: #6b7280;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+/* ===== Sections & Forms ===== */
+
+.admin-section {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.admin-section h2 {
+    margin: 0 0 8px 0;
+    font-size: 1.25em;
+}
+
+.admin-section-danger {
+    border-color: #fecaca;
+    background: #fef2f2;
+}
+
+.section-desc {
+    margin: 0 0 16px 0;
+    color: #6b7280;
+    font-size: 0.9em;
+}
+
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 0.95em;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* ===== Tables ===== */
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-table th {
+    background: #f3f4f6;
+    font-weight: 600;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+}
+
+.admin-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.actions-cell {
+    white-space: nowrap;
+    display: flex;
+    gap: 6px;
+}
+
+.reason-cell {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ===== Alerts ===== */
+
+.alert {
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+}
+
+.alert-info {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+.alert-success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+/* ===== Stats Page ===== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2em;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.85em;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+/* ===== Empty State ===== */
+
+.empty-state {
+    color: #9ca3af;
+    font-style: italic;
+    padding: 16px 0;
+}

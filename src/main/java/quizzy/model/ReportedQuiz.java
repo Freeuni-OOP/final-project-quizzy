@@ -60,14 +60,25 @@ public class ReportedQuiz {
      * @param reason   the reason the quiz is being flagged
      */
     public ReportedQuiz(int id, int quizId, User reporter, String reason) {
+        this(id, quizId, reporter, reason, ReportStatus.PENDING,
+                LocalDateTime.now(), null, null);
+    }
+
+    /**
+     * Full constructor used when reconstructing an existing report for updates
+     * (e.g. setting resolution fields after admin review).
+     */
+    public ReportedQuiz(int id, int quizId, User reporter, String reason,
+                        ReportStatus status, LocalDateTime createdAt,
+                        LocalDateTime resolvedAt, Integer reviewedById) {
         this.id = id;
         this.quizId = quizId;
         this.reporter = reporter;
         this.reason = reason;
-        this.status = ReportStatus.PENDING;
-        this.createdAt = LocalDateTime.now();
-        this.resolvedAt = null;
-        this.reviewedById = null;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.resolvedAt = resolvedAt;
+        this.reviewedById = reviewedById;
     }
 
     public int getId() {
