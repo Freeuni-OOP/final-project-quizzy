@@ -156,14 +156,11 @@ public final class AchievementService {
      * @return the scalar result as a {@code long} (0 if the query returns null)
      */
     private static long countColumn(String sql, int param) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             NativeQuery<?> query = session.createNativeQuery(sql);
             query.setParameter(1, param);
             Number result = (Number) query.uniqueResult();
             return result != null ? result.longValue() : 0L;
-        } finally {
-            session.close();
         }
     }
 }

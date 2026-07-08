@@ -5,7 +5,6 @@ import quizzy.model.Achievement;
 import quizzy.model.User;
 import quizzy.model.UserAchievement;
 
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class AchievementTag extends SimpleTagSupport {
      * Queries the user's achievements and writes the icon HTML to the page.
      */
     @Override
-    public void doTag() throws JspException, IOException {
+    public void doTag() throws IOException {
         if (user == null) {
             return;
         }

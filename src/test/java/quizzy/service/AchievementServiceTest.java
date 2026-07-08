@@ -31,10 +31,8 @@ import static org.junit.Assert.*;
 public class AchievementServiceTest {
 
     private static final UserDAO userDAO = new UserDAO();
-    private static final UserAchievementDAO uaDAO = new UserAchievementDAO();
 
     private User testUser;
-    private String uniqueUsername;
 
     /**
      * Creates the {@code quizzes} and {@code quiz_attempts} tables in H2.
@@ -83,7 +81,7 @@ public class AchievementServiceTest {
 
     @Before
     public void setUp() {
-        uniqueUsername = "test_ach_" + System.currentTimeMillis();
+        String uniqueUsername = "test_ach_" + System.currentTimeMillis();
         testUser = new User(0, uniqueUsername, "hash", "salt", false);
         userDAO.save(testUser);
         /* Re-fetch to get the database-assigned ID */
@@ -351,7 +349,8 @@ public class AchievementServiceTest {
         try {
             java.lang.reflect.Constructor<AchievementService> ctor =
                     AchievementService.class.getDeclaredConstructor();
-            assertFalse("Constructor should be private", ctor.isAccessible());
+            assertTrue("Constructor should be private",
+                    java.lang.reflect.Modifier.isPrivate(ctor.getModifiers()));
         } catch (NoSuchMethodException e) {
             fail("AchievementService should have a private no-arg constructor");
         }
@@ -390,23 +389,21 @@ public class AchievementServiceTest {
     // ------------------------------------------------------------------
 
     private void executeUpdate(String sql, int... params) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            NativeQuery<?> query = session.createNativeQuery(sql);
-            for (int i = 0; i < params.length; i++) {
-                query.setParameter(i + 1, params[i]);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                NativeQuery<?> query = session.createNativeQuery(sql);
+                for (int i = 0; i < params.length; i++) {
+                    query.setParameter(i + 1, params[i]);
+                }
+                query.executeUpdate();
+                tx.commit();
+            } catch (RuntimeException e) {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+                throw e;
             }
-            query.executeUpdate();
-            tx.commit();
-        } catch (RuntimeException e) {
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
-            }
-            throw e;
-        } finally {
-            session.close();
         }
     }
 
@@ -415,13 +412,10 @@ public class AchievementServiceTest {
     }
 
     private int queryLastInsertId() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             NativeQuery<?> query = session.createNativeQuery("SELECT LAST_INSERT_ID()");
             Number result = (Number) query.uniqueResult();
             return result != null ? result.intValue() : 0;
-        } finally {
-            session.close();
         }
     }
 }
