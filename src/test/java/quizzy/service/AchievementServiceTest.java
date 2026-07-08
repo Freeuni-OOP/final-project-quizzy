@@ -7,7 +7,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import quizzy.dao.UserAchievementDAO;
 import quizzy.dao.UserDAO;
 import quizzy.model.Achievement;
 import quizzy.model.User;
@@ -41,41 +40,38 @@ public class AchievementServiceTest {
      */
     @BeforeClass
     public static void createNonEntityTables() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                session.createNativeQuery(
+                        "CREATE TABLE IF NOT EXISTS quizzes ("
+                                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                                + "creator_id INT NOT NULL, "
+                                + "title VARCHAR(200), "
+                                + "description TEXT, "
+                                + "random_questions BOOLEAN DEFAULT FALSE, "
+                                + "one_page BOOLEAN DEFAULT TRUE, "
+                                + "immediate_correction BOOLEAN DEFAULT FALSE, "
+                                + "practice_mode BOOLEAN DEFAULT FALSE"
+                                + ")").executeUpdate();
 
-            session.createNativeQuery(
-                    "CREATE TABLE IF NOT EXISTS quizzes ("
-                            + "id INT AUTO_INCREMENT PRIMARY KEY, "
-                            + "creator_id INT NOT NULL, "
-                            + "title VARCHAR(200), "
-                            + "description TEXT, "
-                            + "random_questions BOOLEAN DEFAULT FALSE, "
-                            + "one_page BOOLEAN DEFAULT TRUE, "
-                            + "immediate_correction BOOLEAN DEFAULT FALSE, "
-                            + "practice_mode BOOLEAN DEFAULT FALSE"
-                            + ")").executeUpdate();
+                session.createNativeQuery(
+                        "CREATE TABLE IF NOT EXISTS quiz_attempts ("
+                                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                                + "user_id INT NOT NULL, "
+                                + "quiz_id INT NOT NULL, "
+                                + "score INT NOT NULL, "
+                                + "max_score INT NOT NULL, "
+                                + "time_taken_seconds BIGINT NOT NULL"
+                                + ")").executeUpdate();
 
-            session.createNativeQuery(
-                    "CREATE TABLE IF NOT EXISTS quiz_attempts ("
-                            + "id INT AUTO_INCREMENT PRIMARY KEY, "
-                            + "user_id INT NOT NULL, "
-                            + "quiz_id INT NOT NULL, "
-                            + "score INT NOT NULL, "
-                            + "max_score INT NOT NULL, "
-                            + "time_taken_seconds BIGINT NOT NULL"
-                            + ")").executeUpdate();
-
-            tx.commit();
-        } catch (RuntimeException e) {
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
+                tx.commit();
+            } catch (RuntimeException e) {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+                throw e;
             }
-            throw e;
-        } finally {
-            session.close();
         }
     }
 
