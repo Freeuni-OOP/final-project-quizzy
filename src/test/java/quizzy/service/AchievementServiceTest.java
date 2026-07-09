@@ -62,7 +62,8 @@ public class AchievementServiceTest {
                                 + "quiz_id INT NOT NULL, "
                                 + "score INT NOT NULL, "
                                 + "max_score INT NOT NULL, "
-                                + "time_taken_seconds BIGINT NOT NULL"
+                                + "time_taken_seconds BIGINT NOT NULL, "
+                                + "completed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
                                 + ")").executeUpdate();
 
                 tx.commit();

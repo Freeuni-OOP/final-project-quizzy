@@ -3,6 +3,8 @@ package quizzy.admin;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import quizzy.dao.UserDAO;
+import quizzy.model.User;
 import quizzy.util.HibernateUtil;
 import quizzy.util.SessionUtils;
 
@@ -38,6 +40,20 @@ public class ModerationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        /* AJAX user lookup — returns JSON { id, username, isAdmin } */
+        String lookup = request.getParameter("lookup");
+        if (lookup != null) {
+            writeJson(response, lookupUserJson(parseId(lookup)));
+            return;
+        }
+
+        /* AJAX quiz lookup — returns JSON { id, title, creator } */
+        String qlookup = request.getParameter("qlookup");
+        if (qlookup != null) {
+            writeJson(response, lookupQuizJson(parseId(qlookup)));
+            return;
+        }
+
         request.setAttribute("message", request.getParameter("message"));
         request.getRequestDispatcher("/WEB-INF/admin/moderation.jsp")
                 .forward(request, response);
@@ -53,22 +69,26 @@ public class ModerationServlet extends HttpServlet {
         if (!SessionUtils.isAdmin(request.getSession())) {
             message = "You do not have permission to perform this action.";
         } else {
-            switch (action != null ? action : "") {
-                case "promote":
-                    message = promoteUser(request);
-                    break;
-                case "remove-user":
-                    message = removeUser(request);
-                    break;
-                case "remove-quiz":
-                    message = removeQuiz(request);
-                    break;
-                case "clear-history":
-                    message = clearQuizHistory(request);
-                    break;
-                default:
-                    message = "Unknown action.";
-                    break;
+            try {
+                switch (action != null ? action : "") {
+                    case "promote":
+                        message = promoteUser(request);
+                        break;
+                    case "remove-user":
+                        message = removeUser(request);
+                        break;
+                    case "remove-quiz":
+                        message = removeQuiz(request);
+                        break;
+                    case "clear-history":
+                        message = clearQuizHistory(request);
+                        break;
+                    default:
+                        message = "Unknown action.";
+                        break;
+                }
+            } catch (RuntimeException e) {
+                message = "An error occurred: " + e.getMessage();
             }
         }
 
@@ -83,6 +103,20 @@ public class ModerationServlet extends HttpServlet {
         int userId = parseId(request.getParameter("userId"));
         if (userId <= 0) {
             return "Invalid user ID.";
+        }
+
+        /* First check whether the user exists and is already an admin. */
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Object result = session.createNativeQuery(
+                            "SELECT is_admin FROM users WHERE id = :uid")
+                    .setParameter("uid", userId)
+                    .uniqueResult();
+            if (result == null) {
+                return "User #" + userId + " not found.";
+            }
+            if (Boolean.TRUE.equals(result)) {
+                return "User #" + userId + " is already an admin.";
+            }
         }
 
         int updated = executeUpdate("UPDATE users SET is_admin = TRUE WHERE id = :uid",
@@ -171,6 +205,35 @@ public class ModerationServlet extends HttpServlet {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
             return -1;
+        }
+    }
+
+    private static void writeJson(HttpServletResponse response, String json)
+            throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
+    }
+
+    private static String lookupUserJson(int id) {
+        if (id <= 0) return "null";
+        User user = new UserDAO().findById(id);
+        if (user == null) return "null";
+        return String.format("{\"id\":%d,\"username\":\"%s\",\"isAdmin\":%b}",
+                user.getId(), user.getUsername(), user.isAdmin());
+    }
+
+    private static String lookupQuizJson(int id) {
+        if (id <= 0) return "null";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Object[] row = (Object[]) session.createNativeQuery(
+                            "SELECT q.title, u.username FROM quizzes q " +
+                            "JOIN users u ON u.id = q.creator_id WHERE q.id = :id")
+                    .setParameter("id", id)
+                    .uniqueResult();
+            if (row == null) return "null";
+            return String.format("{\"id\":%d,\"title\":\"%s\",\"creator\":\"%s\"}",
+                    id, row[0], row[1]);
         }
     }
 

@@ -29,7 +29,6 @@
 <%
     // currentUser already declared by header.jsp's include, above
     boolean isOwner = currentUser != null && quiz != null && currentUser.getId() == quiz.getCreatorId();
-    String ctx = request.getContextPath();
 %>
 
 <main class="container" style="max-width: 820px; margin: 0 auto;">

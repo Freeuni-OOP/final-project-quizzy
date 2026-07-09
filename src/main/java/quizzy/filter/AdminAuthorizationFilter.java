@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 public class AdminAuthorizationFilter implements Filter {
 
-    private static final String LOGIN_PAGE = "/login.jsp";
+    private static final String LOGIN_PAGE = "/login";
     private static final String ERROR_ATTR = "loginError";
 
     @Override

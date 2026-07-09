@@ -4,6 +4,11 @@
   String nextParam = request.getParameter("next");
   String errorMsg = (String) request.getAttribute("error");
   String prevUsername = (String) request.getAttribute("username");
+  // AdminAuthorizationFilter sets this when blocking non-admin access
+  if (errorMsg == null) {
+    errorMsg = (String) session.getAttribute("loginError");
+    if (errorMsg != null) session.removeAttribute("loginError");
+  }
 %>
 <%@ include file="common/head.jsp" %>
 <%@ include file="common/header.jsp" %>
