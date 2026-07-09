@@ -1,29 +1,48 @@
-<%@ include file="common/header.jspf" %>
+<%@ page import="quizzy.web.WebEscape" %>
 <%
-    String loginError = (String) request.getAttribute("error");
-    String prevUsername = (String) request.getAttribute("username");
-    String next = request.getParameter("next");
+  String pageTitle = "Log in \u00B7 Quizzy";
+  String nextParam = request.getParameter("next");
+  String errorMsg = (String) request.getAttribute("error");
+  String prevUsername = (String) request.getAttribute("username");
 %>
-<div class="card auth-card">
-    <h1>Log in</h1>
-    <% if (loginError != null) { %>
-        <p class="error"><%= WebEscape.html(loginError) %></p>
-    <% } %>
-    <form method="post" action="<%= ctx %>/login" class="stack">
-        <% if (next != null) { %>
-            <input type="hidden" name="next" value="<%= WebEscape.html(next) %>">
-        <% } %>
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" autofocus
-               value="<%= WebEscape.html(prevUsername) %>" required>
+<%@ include file="common/head.jsp" %>
+<%@ include file="common/header.jsp" %>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
+<main class="auth-shell">
+  <div class="ticket-card">
+    <div class="ticket-card__stub">
+      <p class="ticket-eyebrow">No. 001 &middot; Member Login</p>
+      <h1 class="ticket-title">Welcome back</h1>
+    </div>
+    <div class="ticket-card__perforation"></div>
+    <div class="ticket-card__body">
 
-        <button type="submit" class="btn" style="margin-top:1rem;">Log in</button>
-    </form>
-    <p class="muted center" style="margin-top:1rem;">
-        No account? <a href="<%= ctx %>/register">Register</a>
-    </p>
-</div>
-<%@ include file="common/footer.jspf" %>
+      <% if (errorMsg != null) { %>
+      <div class="alert-error"><%= WebEscape.html(errorMsg) %></div>
+      <% } %>
+
+      <form method="post" action="<%= request.getContextPath() %>/login" class="stack-form">
+        <input type="hidden" name="next" value="<%= WebEscape.html(nextParam) %>">
+
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required autofocus
+                 value="<%= WebEscape.html(prevUsername) %>">
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+
+        <button type="submit" class="btn-stamp">Log in</button>
+      </form>
+
+      <p class="auth-switch">
+        New to Quizzy? <a href="<%= request.getContextPath() %>/register">Create an account</a>
+      </p>
+    </div>
+  </div>
+</main>
+
+<%@ include file="common/footer.jsp" %>
