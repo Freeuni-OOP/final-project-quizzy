@@ -21,7 +21,7 @@
         <!-- MySQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
-        <!-- Schema validation (never auto-create/alter in production) -->
+        <!-- Schema validation -->
         <property name="hibernate.hbm2ddl.auto">validate</property>
 
         <!-- Debugging -->
@@ -30,6 +30,8 @@
 
         <!-- Entity mappings -->
         <mapping class="quizzy.model.User"/>
+        <mapping class="quizzy.model.Quiz"/>
+        <mapping class="quizzy.model.QuizAttempt"/>
         <mapping class="quizzy.model.Announcement"/>
         <mapping class="quizzy.model.UserAchievement"/>
         <mapping class="quizzy.model.ReportedQuiz"/>
