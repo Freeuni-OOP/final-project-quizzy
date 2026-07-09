@@ -3,7 +3,9 @@ package quizzy.dao;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import quizzy.model.QuizAttempt;
+import quizzy.service.AttemptView;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class QuizAttemptDAO extends BaseDAO<QuizAttempt> {
@@ -24,7 +26,7 @@ public class QuizAttemptDAO extends BaseDAO<QuizAttempt> {
         Session session = sessionFactory.openSession();
         try {
             Query<QuizAttempt> query = session.createQuery(
-                    "FROM QuizAttempt WHERE user.id = :userId ORDER BY id DESC",
+                    "FROM QuizAttempt WHERE user.id = :userId ORDER BY completedAt DESC",
                     QuizAttempt.class);
             query.setParameter("userId", userId);
             return query.list();
@@ -52,6 +54,74 @@ public class QuizAttemptDAO extends BaseDAO<QuizAttempt> {
             Query<Integer> query = session.createQuery(
                     "SELECT MAX(score) FROM QuizAttempt WHERE quiz.id = :quizId",
                     Integer.class);
+            query.setParameter("quizId", quizId);
+            return query.uniqueResult();
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<AttemptView> findTopAttemptViewsByQuiz(int quizId, int limit) {
+        Session session = sessionFactory.openSession();
+        try {
+            Query<AttemptView> query = session.createQuery(
+                    "SELECT new quizzy.service.AttemptView(a.user.username, a.score, a.maxScore, " +
+                            "a.timeTakenSeconds, a.completedAt) " +
+                            "FROM QuizAttempt a " +
+                            "WHERE a.quiz.id = :quizId " +
+                            "ORDER BY a.score DESC, a.timeTakenSeconds ASC",
+                    AttemptView.class);
+            query.setParameter("quizId", quizId);
+            query.setMaxResults(limit);
+            return query.list();
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<AttemptView> findRecentTopAttemptViewsByQuiz(int quizId, LocalDateTime since, int limit) {
+        Session session = sessionFactory.openSession();
+        try {
+            Query<AttemptView> query = session.createQuery(
+                    "SELECT new quizzy.service.AttemptView(a.user.username, a.score, a.maxScore, " +
+                            "a.timeTakenSeconds, a.completedAt) " +
+                            "FROM QuizAttempt a " +
+                            "WHERE a.quiz.id = :quizId AND a.completedAt >= :since " +
+                            "ORDER BY a.score DESC, a.timeTakenSeconds ASC",
+                    AttemptView.class);
+            query.setParameter("quizId", quizId);
+            query.setParameter("since", since);
+            query.setMaxResults(limit);
+            return query.list();
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<AttemptView> findUserAttemptViewsForQuiz(int quizId, int userId) {
+        Session session = sessionFactory.openSession();
+        try {
+            Query<AttemptView> query = session.createQuery(
+                    "SELECT new quizzy.service.AttemptView(a.user.username, a.score, a.maxScore, " +
+                            "a.timeTakenSeconds, a.completedAt) " +
+                            "FROM QuizAttempt a " +
+                            "WHERE a.quiz.id = :quizId AND a.user.id = :userId " +
+                            "ORDER BY a.completedAt DESC",
+                    AttemptView.class);
+            query.setParameter("quizId", quizId);
+            query.setParameter("userId", userId);
+            return query.list();
+        } finally {
+            session.close();
+        }
+    }
+
+    public Double findAverageScoreByQuiz(int quizId) {
+        Session session = sessionFactory.openSession();
+        try {
+            Query<Double> query = session.createQuery(
+                    "SELECT AVG(score) FROM QuizAttempt WHERE quiz.id = :quizId",
+                    Double.class);
             query.setParameter("quizId", quizId);
             return query.uniqueResult();
         } finally {

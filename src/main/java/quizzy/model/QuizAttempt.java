@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "quiz_attempts")
@@ -34,16 +35,25 @@ public class QuizAttempt {
     @Column(name = "time_taken_seconds", nullable = false)
     private long timeTakenSeconds;
 
+    @Column(name = "completed_at", nullable = false)
+    private LocalDateTime completedAt;
+
     protected QuizAttempt() {
     }
 
     public QuizAttempt(int id, User user, Quiz quiz, int score, int maxScore, long timeTakenSeconds) {
+        this(id, user, quiz, score, maxScore, timeTakenSeconds, LocalDateTime.now());
+    }
+
+    public QuizAttempt(int id, User user, Quiz quiz, int score, int maxScore,
+                       long timeTakenSeconds, LocalDateTime completedAt) {
         this.id = id;
         this.user = user;
         this.quiz = quiz;
         this.score = score;
         this.maxScore = maxScore;
         this.timeTakenSeconds = timeTakenSeconds;
+        this.completedAt = completedAt;
     }
 
     public int getId() {
@@ -76,5 +86,9 @@ public class QuizAttempt {
 
     public long getTimeTakenSeconds() {
         return timeTakenSeconds;
+    }
+
+    public LocalDateTime getCompletedAt() {
+        return completedAt;
     }
 }

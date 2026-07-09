@@ -1,17 +1,25 @@
 package quizzy.model.question;
 
+import quizzy.model.Quiz;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@DiscriminatorValue("TEXT")
 public class TextQuestion extends Question {
-    private ArrayList<String> correctAnswers;
 
-    public TextQuestion(int id, int quizId, String prompt, ArrayList<String> correctAnswers) {
-        super(id, quizId, prompt);
-        this.correctAnswers = correctAnswers;
+    protected TextQuestion() {
     }
 
-    public ArrayList<String> getCorrectAnswers() {
-        return correctAnswers;
+    public TextQuestion(int id, Quiz quiz, String prompt, int questionOrder, List<String> correctAnswers) {
+        super(id, quiz, prompt, questionOrder);
+
+        for (String answer : correctAnswers) {
+            addCorrectAnswer(answer);
+        }
     }
 
     @Override
@@ -26,11 +34,14 @@ public class TextQuestion extends Question {
 
     @Override
     public int grade(String answer) {
+        ArrayList<String> correctAnswers = getCorrectAnswers();
+
         for (String correctAnswer : correctAnswers) {
             if (normalize(answer).equals(normalize(correctAnswer))) {
                 return 1;
             }
         }
+
         return 0;
     }
 }
