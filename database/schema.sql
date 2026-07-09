@@ -43,17 +43,17 @@ CREATE TABLE answers (
 );
 
 CREATE TABLE quiz_attempts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    quiz_id INT NOT NULL,
-    score INT NOT NULL,
-    max_score INT NOT NULL,
-    time_taken_seconds BIGINT NOT NULL,
+           id INT AUTO_INCREMENT PRIMARY KEY,
+           user_id INT NOT NULL,
+           quiz_id INT NOT NULL,
+           score INT NOT NULL,
+           max_score INT NOT NULL,
+           time_taken_seconds BIGINT NOT NULL,
+           completed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (quiz_id) REFERENCES quizzes(id)
+           FOREIGN KEY (user_id) REFERENCES users(id),
+           FOREIGN KEY (quiz_id) REFERENCES quizzes(id)
 );
-
 CREATE TABLE friendships (
     id INT AUTO_INCREMENT PRIMARY KEY,
     requester_id INT NOT NULL,
