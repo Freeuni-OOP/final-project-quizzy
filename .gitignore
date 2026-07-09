@@ -1,3 +1,24 @@
-﻿.idea/
+# AI Tools & Memory
+CLAUDE.md
+docs/m4-execution-plan.md
+.claude/
+.cursor/
+.cursorrules
+.github/copilot-instructions.md
+
+# IDEs
+.idea/
+.vscode/
 *.iml
+
+# Compiled class files & Logs
 target/
+*.class
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Maven
+dependency-reduced-pom.xml

@@ -10,4 +10,76 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!-- ===== M4 Admin ===== -->
+
+    <!-- Admin Authorization Filter -->
+    <filter>
+        <filter-name>AdminAuthorizationFilter</filter-name>
+        <filter-class>quizzy.filter.AdminAuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminAuthorizationFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Admin Dashboard -->
+    <servlet>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <servlet-class>quizzy.admin.AdminDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <url-pattern>/admin/</url-pattern>
+    </servlet-mapping>
+
+    <!-- Announcements CRUD -->
+    <servlet>
+        <servlet-name>AnnouncementServlet</servlet-name>
+        <servlet-class>quizzy.admin.AnnouncementServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnouncementServlet</servlet-name>
+        <url-pattern>/admin/announcements</url-pattern>
+    </servlet-mapping>
+
+    <!-- Moderation Actions -->
+    <servlet>
+        <servlet-name>ModerationServlet</servlet-name>
+        <servlet-class>quizzy.admin.ModerationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ModerationServlet</servlet-name>
+        <url-pattern>/admin/moderation</url-pattern>
+    </servlet-mapping>
+
+    <!-- Site Statistics -->
+    <servlet>
+        <servlet-name>StatsServlet</servlet-name>
+        <servlet-class>quizzy.admin.StatsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StatsServlet</servlet-name>
+        <url-pattern>/admin/stats</url-pattern>
+    </servlet-mapping>
+
+    <!-- Reported Quiz Review Queue -->
+    <servlet>
+        <servlet-name>ReviewQueueServlet</servlet-name>
+        <servlet-class>quizzy.admin.ReviewQueueServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReviewQueueServlet</servlet-name>
+        <url-pattern>/admin/reports</url-pattern>
+    </servlet-mapping>
+
+    <!-- Quiz Reporting (any logged-in user) -->
+    <servlet>
+        <servlet-name>ReportQuizServlet</servlet-name>
+        <servlet-class>quizzy.reporting.ReportQuizServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReportQuizServlet</servlet-name>
+        <url-pattern>/report-quiz</url-pattern>
+    </servlet-mapping>
+
 </web-app>

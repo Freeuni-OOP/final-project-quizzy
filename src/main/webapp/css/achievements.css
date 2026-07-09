@@ -1,0 +1,11 @@
+.achievement-icon {
+    display: inline-block;
+    font-size: 1.5em;
+    margin: 0 4px;
+    cursor: help;
+    transition: transform 0.2s ease;
+}
+
+.achievement-icon:hover {
+    transform: scale(1.2);
+}
