@@ -12,16 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * CRUD servlet for admin announcements — mapped to {@code /admin/announcements}
- * in {@code web.xml}.
- *
- * <ul>
- *   <li><b>GET</b> — lists all announcements with edit/delete controls.</li>
- *   <li><b>POST</b> — dispatches to create, update, or delete based on the
- *       {@code action} parameter.</li>
- * </ul>
- */
+
 public class AnnouncementServlet extends HttpServlet {
 
     @Override

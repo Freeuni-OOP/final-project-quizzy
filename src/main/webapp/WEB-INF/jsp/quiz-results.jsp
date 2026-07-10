@@ -2,11 +2,7 @@
 <%@ page import="quizzy.web.DisplayUtil" %>
 <%@ page import="quizzy.model.QuizAttempt" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
-<%--
-    ASSUMPTION — same as QuizSubmitServlet: QuizAttempt's exact post-Hibernate
-    getters are inferred from QuizAttemptDAO's HQL, not yet confirmed directly:
-    getUser(), getQuiz(), getScore(), getMaxScore(), getTimeTakenSeconds(), getCompletedAt().
---%>
+
 <%
     String pageTitle = "Results \u00B7 Quizzy";
     QuizAttempt attempt = (QuizAttempt) request.getAttribute("attempt");

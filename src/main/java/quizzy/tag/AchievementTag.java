@@ -10,18 +10,7 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Custom JSP tag that renders achievement icons for a given {@link User}.
- *
- * <p>Usage in JSP:
- * <pre>{@code
- *   <%@ taglib prefix="m4" uri="http://quizzy.freeuni.ge/tags/m4" %>
- *   <m4:achievements user="${currentUser}" />
- * }</pre>
- *
- * <p>Each achievement is rendered as a span with an emoji icon and a tooltip
- * describing the achievement.</p>
- */
+
 public class AchievementTag extends SimpleTagSupport {
 
     private User user;

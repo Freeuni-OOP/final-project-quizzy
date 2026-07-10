@@ -4,13 +4,6 @@ import quizzy.model.User;
 
 import javax.servlet.http.HttpSession;
 
-/**
- * Static helpers for reading and writing the currently logged-in {@link User}
- * in the HTTP session. All M4-admin servlets and filters use these methods.
- *
- * <p>The session attribute key is {@link #CURRENT_USER_ATTR} ({@value #CURRENT_USER_ATTR}).
- * M2's login servlet must store the User there after successful authentication.</p>
- */
 public final class SessionUtils {
 
     /** Session attribute key for the logged-in {@link User}. */

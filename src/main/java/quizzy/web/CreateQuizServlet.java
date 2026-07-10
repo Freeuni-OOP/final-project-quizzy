@@ -14,14 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Create a new quiz — {@code GET /quiz/create} shows the form,
- * {@code POST /quiz/create} persists the quiz and its questions.
- *
- * <p>Uses {@link QuizCreationService} for persistence and calls
- * {@link AchievementService#checkAuthorAchievements(int)} after
- * successful creation.</p>
- */
 @WebServlet("/quiz/create")
 public class CreateQuizServlet extends HttpServlet {
 

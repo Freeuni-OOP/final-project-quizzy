@@ -19,16 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Processes quiz answer submissions — {@code POST /quiz/submit}.
- *
- * <p>For <b>multi-page</b> quizzes: records the current answer, advances to the
- * next question, and re-displays {@code quiz-take.jsp}.  If this was the last
- * question, grades everything and redirects to the results page.</p>
- *
- * <p>For <b>one-page</b> quizzes: collects all answers from the form,
- * grades them together, and redirects to the results page.</p>
- */
 @WebServlet("/quiz/submit")
 public class QuizSubmitServlet extends HttpServlet {
 

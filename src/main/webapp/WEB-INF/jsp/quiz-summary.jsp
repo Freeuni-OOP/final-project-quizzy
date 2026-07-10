@@ -4,15 +4,8 @@
 <%@ page import="quizzy.model.User" %>
 <%@ page import="quizzy.service.AttemptView" %>
 <%@ page import="java.util.List" %>
-<%--
-    "quiz" request attribute is the full Quiz entity.
-    topAttempts / recentTopAttempts / userAttempts are List<AttemptView>
-    (quizzy.service.AttemptView — built by M1, confirmed shape from QuizAttemptDAO).
-    "averageScore" is the raw average points score (Double, null if no attempts) —
-    NOT a percentage, since maxScore varies per quiz. "maxScore" is a single
-    representative value borrowed from the top attempt, used only for display
-    (e.g. "3.4 / 5").
---%>
+
+
 <%
     String pageTitle = "Quiz \u00B7 Quizzy";
 
