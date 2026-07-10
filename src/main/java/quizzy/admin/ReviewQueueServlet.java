@@ -19,17 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Admin review queue for reported quizzes — mapped to {@code /admin/reports}
- * in {@code web.xml}.
- *
- * <p><b>GET</b> — lists all PENDING reports.<br>
- * <b>POST</b> — dispatches to approve or reject based on the
- * {@code action} parameter.</p>
- *
- * <p>Approve deletes the quiz via native SQL (Quiz is not a Hibernate entity).
- * Reject only updates the report status.</p>
- */
 public class ReviewQueueServlet extends HttpServlet {
 
     private final ReportedQuizDAO reportedQuizDAO = new ReportedQuizDAO();

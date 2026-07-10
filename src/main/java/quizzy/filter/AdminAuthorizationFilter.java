@@ -13,13 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-/**
- * Protects all URLs under {@code /admin/*} so that only authenticated
- * administrators can access them.
- *
- * <p>Non-admin users (including guests) are redirected to the login page
- * with an error message stored in the session. Registered in {@code web.xml}.</p>
- */
 public class AdminAuthorizationFilter implements Filter {
 
     private static final String LOGIN_PAGE = "/login";

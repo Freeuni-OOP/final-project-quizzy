@@ -16,24 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Handles admin moderation actions — mapped to {@code /admin/moderation}
- * in {@code web.xml}.
- *
- * <p><b>GET</b> — displays the moderation form.<br>
- * <b>POST</b> — executes the requested moderation action.</p>
- *
- * <p>Supported actions (via the {@code action} parameter):</p>
- * <ul>
- *   <li>{@code promote} — grants admin privileges to a user</li>
- *   <li>{@code remove-user} — deletes a user account</li>
- *   <li>{@code remove-quiz} — deletes a quiz</li>
- *   <li>{@code clear-history} — deletes all attempts for a given quiz</li>
- * </ul>
- *
- * <p>Quiz and QuizAttempt are not Hibernate entities (they are M1's plain
- * POJOs), so moderation uses native SQL for those tables.</p>
- */
+
 public class ModerationServlet extends HttpServlet {
 
     @Override

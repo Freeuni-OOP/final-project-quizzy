@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-// TEMPORARY placeholder so my code runs locally. Member 5 owns the real shared DBUtil -
-// delete this once theirs is in and keep getConnection() as the entry point.
-// Reads db.url / db.user / db.pass (system props or DB_URL/DB_USER/DB_PASS env vars).
+
 public final class DBUtil {
 
     private static final String URL = config("db.url", "DB_URL", "jdbc:mysql://localhost:3306/quizzy");

@@ -12,13 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Handles user-submitted quiz reports — mapped to {@code /report-quiz}
- * in {@code web.xml}.
- *
- * <p><b>GET</b> — shows the report form. Requires {@code quizId} parameter.<br>
- * <b>POST</b> — creates a {@link ReportedQuiz} with status {@code PENDING}.</p>
- */
 public class ReportQuizServlet extends HttpServlet {
 
     private final ReportedQuizDAO reportedQuizDAO = new ReportedQuizDAO();

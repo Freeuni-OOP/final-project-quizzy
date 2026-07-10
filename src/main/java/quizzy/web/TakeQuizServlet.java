@@ -14,14 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Starts a quiz attempt — {@code GET /quiz/take?id=X[&practice=true]}.
- *
- * <p>Creates a {@link QuizSession} and stores it in the HTTP session.
- * The session persistence key is {@code quizzy.quizSession}.  Subsequent
- * answer submissions ({@code POST /quiz/submit}) read and update this
- * session object.</p>
- */
+
 @WebServlet("/quiz/take")
 public class TakeQuizServlet extends HttpServlet {
 

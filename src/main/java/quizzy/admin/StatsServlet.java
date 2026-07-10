@@ -11,16 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Displays site-wide statistics — mapped to {@code /admin/stats}
- * in {@code web.xml}.
- *
- * <p><b>GET</b> — runs HQL and native SQL queries and forwards to
- * {@code stats.jsp}.</p>
- *
- * <p>Aggregate statistics for {@code quizzes} and {@code quiz_attempts}
- * use native SQL for flexibility (aggregations, JOINs across tables).</p>
- */
 public class StatsServlet extends HttpServlet {
 
     @Override

@@ -11,21 +11,6 @@ import quizzy.util.HibernateUtil;
 
 import java.util.List;
 
-/**
- * Core achievement engine — checks milestone conditions and awards achievements.
- * All methods are static; the class cannot be instantiated.
- *
- * <p>Integration hooks for other members:
- * <ul>
- *   <li>M1 calls {@link #checkAuthorAchievements(int)} after quiz creation</li>
- *   <li>M1 calls {@link #checkQuizTakerAchievements(int, int, int)} after quiz submission</li>
- *   <li>M5 calls {@link #awardAchievement(int, Achievement)} after practice mode</li>
- *   <li>M3 calls {@link #getUserAchievements(int)} for profile display</li>
- * </ul>
- *
- * <p>{@code Quiz} and {@code QuizAttempt} are plain POJOs (not Hibernate entities),
- * so queries against {@code quizzes} and {@code quiz_attempts} tables use native SQL.
- */
 public final class AchievementService {
 
     private static final UserAchievementDAO userAchievementDAO = new UserAchievementDAO();
