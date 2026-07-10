@@ -1,62 +1,59 @@
 package quizzy.dao;
 
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import quizzy.model.Achievement;
 import quizzy.model.AttemptSummary;
-import quizzy.util.DBUtil;
+import quizzy.model.UserAchievement;
+import quizzy.util.HibernateUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-// read-only queries for the profile page. these tables belong to M1/M4, we only read them here.
+/**
+ * Read-only queries for the profile page.
+ * Uses M4's {@link UserAchievementDAO} for achievements and native SQL for
+ * quiz attempts (which span M1's quizzes and quiz_attempts tables).
+ */
 public class ProfileDAO {
 
+    private final UserAchievementDAO userAchievementDAO = new UserAchievementDAO();
+
+    /**
+     * Returns the user's quiz attempt history with quiz titles.
+     */
     public List<AttemptSummary> getAttempts(int userId) {
-        String sql = "SELECT a.quiz_id, q.title, a.score, a.max_score, a.time_taken_seconds "
-                + "FROM quiz_attempts a JOIN quizzes q ON q.id = a.quiz_id "
-                + "WHERE a.user_id = ? ORDER BY a.id DESC";
-        List<AttemptSummary> attempts = new ArrayList<>();
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    attempts.add(new AttemptSummary(
-                            rs.getInt("quiz_id"),
-                            rs.getString("title"),
-                            rs.getInt("score"),
-                            rs.getInt("max_score"),
-                            rs.getLong("time_taken_seconds")));
-                }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            @SuppressWarnings("unchecked")
+            List<Object[]> rows = session.createNativeQuery(
+                    "SELECT a.quiz_id, q.title, a.score, a.max_score, a.time_taken_seconds "
+                            + "FROM quiz_attempts a JOIN quizzes q ON q.id = a.quiz_id "
+                            + "WHERE a.user_id = :uid ORDER BY a.id DESC")
+                    .setParameter("uid", userId)
+                    .list();
+
+            List<AttemptSummary> attempts = new ArrayList<>();
+            for (Object[] row : rows) {
+                attempts.add(new AttemptSummary(
+                        ((Number) row[0]).intValue(),
+                        (String) row[1],
+                        ((Number) row[2]).intValue(),
+                        ((Number) row[3]).intValue(),
+                        ((Number) row[4]).longValue()));
             }
             return attempts;
-        } catch (SQLException e) {
-            throw new DataAccessException("Failed to load quiz history for user id: " + userId, e);
         }
     }
 
+    /**
+     * Returns the achievements earned by a user.
+     * Uses M4's enum-based Achievement system (no achievements lookup table).
+     */
     public List<Achievement> getAchievements(int userId) {
-        String sql = "SELECT ac.id, ac.name, ac.description "
-                + "FROM user_achievements ua JOIN achievements ac ON ac.id = ua.achievement_id "
-                + "WHERE ua.user_id = ? ORDER BY ac.name";
-        List<Achievement> achievements = new ArrayList<>();
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    achievements.add(new Achievement(
-                            rs.getInt("id"),
-                            rs.getString("name"),
-                            rs.getString("description")));
-                }
-            }
-            return achievements;
-        } catch (SQLException e) {
-            throw new DataAccessException("Failed to load achievements for user id: " + userId, e);
-        }
+        List<UserAchievement> earned = userAchievementDAO.findByUser(userId);
+        return earned.stream()
+                .map(UserAchievement::getAchievement)
+                .collect(Collectors.toList());
     }
 }

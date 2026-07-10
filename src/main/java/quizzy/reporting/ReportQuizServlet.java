@@ -31,7 +31,7 @@ public class ReportQuizServlet extends HttpServlet {
 
         if (currentUser == null) {
             response.sendRedirect(request.getContextPath()
-                    + "/login.jsp?message="
+                    + "/login?message="
                     + java.net.URLEncoder.encode("You must be logged in to report a quiz.", StandardCharsets.UTF_8));
             return;
         }
@@ -57,7 +57,7 @@ public class ReportQuizServlet extends HttpServlet {
 
         if (currentUser == null) {
             response.sendRedirect(request.getContextPath()
-                    + "/login.jsp?message="
+                    + "/login?message="
                     + java.net.URLEncoder.encode("You must be logged in to report a quiz.", StandardCharsets.UTF_8));
             return;
         }

@@ -29,7 +29,12 @@
             <input type="hidden" name="action" value="promote">
             <div class="form-group">
                 <label for="promoteUserId">User ID</label>
-                <input type="number" id="promoteUserId" name="userId" min="1" required>
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                    <input type="number" id="promoteUserId" name="userId" min="1" required
+                           oninput="lookupUser(this.value, 'promoteResult')"
+                           style="max-width:200px;">
+                    <span id="promoteResult" class="lookup-result"></span>
+                </div>
             </div>
             <button type="submit" class="btn-primary"
                     onclick="return confirm('Promote this user to admin?');">
@@ -46,7 +51,12 @@
             <input type="hidden" name="action" value="remove-user">
             <div class="form-group">
                 <label for="removeUserId">User ID</label>
-                <input type="number" id="removeUserId" name="userId" min="1" required>
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                    <input type="number" id="removeUserId" name="userId" min="1" required
+                           oninput="lookupUser(this.value, 'removeResult')"
+                           style="max-width:200px;">
+                    <span id="removeResult" class="lookup-result"></span>
+                </div>
             </div>
             <button type="submit" class="btn-danger"
                     onclick="return confirm('WARNING: This will permanently delete the user. Continue?');">
@@ -63,7 +73,12 @@
             <input type="hidden" name="action" value="remove-quiz">
             <div class="form-group">
                 <label for="removeQuizId">Quiz ID</label>
-                <input type="number" id="removeQuizId" name="quizId" min="1" required>
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                    <input type="number" id="removeQuizId" name="quizId" min="1" required
+                           oninput="lookupQuiz(this.value, 'removeQuizResult')"
+                           style="max-width:200px;">
+                    <span id="removeQuizResult" class="lookup-result"></span>
+                </div>
             </div>
             <button type="submit" class="btn-danger"
                     onclick="return confirm('WARNING: This will delete the quiz and all its attempts. Continue?');">
@@ -80,7 +95,12 @@
             <input type="hidden" name="action" value="clear-history">
             <div class="form-group">
                 <label for="clearQuizId">Quiz ID</label>
-                <input type="number" id="clearQuizId" name="quizId" min="1" required>
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                    <input type="number" id="clearQuizId" name="quizId" min="1" required
+                           oninput="lookupQuiz(this.value, 'clearQuizResult')"
+                           style="max-width:200px;">
+                    <span id="clearQuizResult" class="lookup-result"></span>
+                </div>
             </div>
             <button type="submit" class="btn-danger"
                     onclick="return confirm('Clear all attempt history for this quiz?');">
@@ -89,5 +109,62 @@
         </form>
     </section>
 </div>
+
+<style>
+  .lookup-result { font-weight: 600; font-size: 0.92rem; }
+  .lookup-result.found { color: var(--success, #2d8a56); }
+  .lookup-result.admin-tag { color: var(--gold-dark, #b8860b); }
+  .lookup-result.not-found { color: var(--incorrect, #c0392b); }
+</style>
+
+<script>
+  var userTimer, quizTimer;
+  function lookupUser(userId, resultId) {
+    var el = document.getElementById(resultId);
+    if (!userId || userId < 1) { el.textContent = ''; return; }
+    clearTimeout(userTimer);
+    userTimer = setTimeout(function() {
+      fetch('${pageContext.request.contextPath}/admin/moderation?lookup=' + encodeURIComponent(userId))
+        .then(function(r) { return r.json(); })
+        .then(function(user) {
+          if (user) {
+            el.textContent = user.username + (user.isAdmin ? ' 👑' : '');
+            el.className = 'lookup-result ' + (user.isAdmin ? 'admin-tag' : 'found');
+          } else {
+            el.textContent = '✗ Not found';
+            el.className = 'lookup-result not-found';
+          }
+        })
+        .catch(function() {
+          el.textContent = '⚠ Error';
+          el.className = 'lookup-result not-found';
+        });
+    }, 300);
+  }
+
+  function lookupQuiz(quizId, resultId) {
+    var el = document.getElementById(resultId);
+    if (!quizId || quizId < 1) { el.textContent = ''; return; }
+    clearTimeout(quizTimer);
+    quizTimer = setTimeout(function() {
+      fetch('${pageContext.request.contextPath}/admin/moderation?qlookup=' + encodeURIComponent(quizId))
+        .then(function(r) { return r.json(); })
+        .then(function(quiz) {
+          if (quiz) {
+            el.textContent = quiz.title + ' (by ' + quiz.creator + ')';
+            el.className = 'lookup-result found';
+          } else {
+            el.textContent = '✗ Not found';
+            el.className = 'lookup-result not-found';
+          }
+        })
+        .catch(function() {
+          el.textContent = '⚠ Error';
+          el.className = 'lookup-result not-found';
+        });
+    }, 300);
+  }
+</script>
+
 </body>
 </html>

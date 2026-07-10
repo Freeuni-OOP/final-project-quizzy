@@ -1,5 +1,5 @@
 <%-- Static include, goes right after common/head.jsp --%>
-<%@ page import="quizzy.web.SessionUtils" %>
+<%@ page import="quizzy.web.SessionUtil" %>
 <%@ page import="quizzy.web.WebEscape" %>
 <%@ page import="quizzy.model.User" %>
 <%
@@ -19,7 +19,6 @@
 
     <nav class="folder-tabs" aria-label="Primary">
       <a href="<%= ctx %>/home" class="<%= uri.endsWith("/home") ? "active" : "" %>">Home</a>
-      <%-- TODO(M3/M1): update once the browse/create/take-quiz servlets exist --%>
       <a href="<%= ctx %>/quizzes" class="<%= uri.endsWith("/quizzes") ? "active" : "" %>">Browse</a>
       <a href="<%= ctx %>/quiz/create" class="<%= uri.contains("/quiz/create") ? "active" : "" %>">Create</a>
       <a href="<%= ctx %>/friends" class="<%= uri.contains("/friends") ? "active" : "" %>">Friends</a>
@@ -42,7 +41,7 @@
 </header>
 
 <%
-    String flashMessage = SessionUtils.consumeFlash(request);
+    String flashMessage = SessionUtil.consumeFlash(request);
 %>
 <% if (flashMessage != null) { %>
   <div class="container">

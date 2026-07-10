@@ -18,8 +18,8 @@ import java.util.List;
  * <p><b>GET</b> — runs HQL and native SQL queries and forwards to
  * {@code stats.jsp}.</p>
  *
- * <p>Quiz and QuizAttempt are not Hibernate entities, so queries against
- * {@code quizzes} and {@code quiz_attempts} use native SQL.</p>
+ * <p>Aggregate statistics for {@code quizzes} and {@code quiz_attempts}
+ * use native SQL for flexibility (aggregations, JOINs across tables).</p>
  */
 public class StatsServlet extends HttpServlet {
 
