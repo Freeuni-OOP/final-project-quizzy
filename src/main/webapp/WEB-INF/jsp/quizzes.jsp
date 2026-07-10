@@ -48,7 +48,7 @@
             <% if (q.isRandomQuestions()) { %><span class="option-tag">Random order</span><% } %>
             <% if (q.isOnePage()) { %><span class="option-tag">Single page</span><% } else { %><span class="option-tag">Multi-page</span><% } %>
             <% if (q.isImmediateCorrection()) { %><span class="option-tag">Immediate correction</span><% } %>
-            <% if (q.isPracticeMode()) { %><span class="option-tag">Practice mode</span><% } %>
+<%--            <% if (q.isPracticeMode()) { %><span class="option-tag">Practice mode</span><% } %>--%>
           </div>
         </a>
       <% } %>
