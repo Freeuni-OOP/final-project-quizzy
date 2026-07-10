@@ -26,12 +26,7 @@ public final class AchievementService {
 
     /**
      * Checks and awards author-based achievements for a user who just created
-     * a quiz. Called by M1 after persisting the quiz.
-     *
-     * <p>Awards {@code AMATEUR_AUTHOR} (≥1), {@code PROLIFIC_AUTHOR} (≥5),
-     * and {@code PRODIGIOUS_AUTHOR} (≥10) based on the user's total quiz count.</p>
-     *
-     * @param userId the ID of the user who created the quiz
+     * a quiz.
      */
     public static void checkAuthorAchievements(int userId) {
         long quizCount = countColumn("SELECT COUNT(*) FROM quizzes WHERE creator_id = ?", userId);
@@ -49,15 +44,7 @@ public final class AchievementService {
 
     /**
      * Checks and awards taker-based achievements for a user who just completed
-     * a quiz attempt. Called by M1 after persisting the attempt.
-     *
-     * <p>Awards {@code QUIZ_MACHINE} when the user has taken ≥10 quizzes,
-     * and {@code I_AM_THE_GREATEST} when the user's score is the highest
-     * recorded for that quiz at the moment of completion.</p>
-     *
-     * @param userId the ID of the user who submitted the attempt
-     * @param quizId the ID of the quiz that was taken
-     * @param score  the score the user achieved on this attempt
+     * a quiz attempt.
      */
     public static void checkQuizTakerAchievements(int userId, int quizId, int score) {
         long attemptCount = countColumn(
@@ -82,11 +69,6 @@ public final class AchievementService {
     /**
      * Awards a specific achievement to a user if they do not already have it.
      * Safe to call multiple times — deduplication is handled.
-     *
-     * @param userId      the ID of the user receiving the achievement
-     * @param achievement the achievement to award
-     * @return {@code true} if the achievement was newly awarded,
-     *         {@code false} if the user already had it or the user was not found
      */
     public static boolean awardAchievement(int userId, Achievement achievement) {
         if (hasAchievement(userId, achievement)) {
@@ -115,31 +97,13 @@ public final class AchievementService {
 
     /**
      * Checks whether a user has already earned a specific achievement.
-     *
-     * @param userId      the ID of the user
-     * @param achievement the achievement to check
-     * @return {@code true} if the user already has this achievement
      */
     public static boolean hasAchievement(int userId, Achievement achievement) {
         return userAchievementDAO.hasAchievement(userId, achievement);
     }
 
-    // -----------------------------------------------------------------------
-    // Private native-SQL helpers
-    //
-    // Quiz and QuizAttempt are plain POJOs (not @Entity), so we cannot use
-    // HQL.  These helpers run native SQL against the raw table names and
-    // return a single long value.
-    // -----------------------------------------------------------------------
 
-    /**
-     * Executes a native SQL query that returns a single scalar number and
-     * extracts it as a {@code long}.
-     *
-     * @param sql    the native SQL string with one {@code ?} placeholder
-     * @param param  the value to bind to the placeholder
-     * @return the scalar result as a {@code long} (0 if the query returns null)
-     */
+
     private static long countColumn(String sql, int param) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             NativeQuery<?> query = session.createNativeQuery(sql);

@@ -77,17 +77,14 @@ public class ReviewQueueServlet extends HttpServlet {
         }
         int adminId = admin.getId();
 
-        /* Read the quiz ID before the transaction (this is safe — the quiz
-           column won't change even if another admin races us). */
+        // Read the quiz ID before the transaction.
         ReportedQuiz report = reportedQuizDAO.findById(ReportedQuiz.class, reportId);
         if (report == null) {
             return "Report #" + reportId + " not found.";
         }
         int quizId = report.getQuizId();
 
-        /* Run the status update and cascade delete in a SINGLE transaction.
-           The atomic UPDATE … WHERE status = 'PENDING' eliminates the TOCTOU
-           race on double-resolution. */
+        // Run the status update and cascade delete in a SINGLE transaction.
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {

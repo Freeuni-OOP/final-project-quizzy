@@ -88,7 +88,7 @@ public class ModerationServlet extends HttpServlet {
             return "Invalid user ID.";
         }
 
-        /* First check whether the user exists and is already an admin. */
+        // First check whether the user exists and is already an admin.
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Object result = session.createNativeQuery(
                             "SELECT is_admin FROM users WHERE id = :uid")
@@ -109,17 +109,14 @@ public class ModerationServlet extends HttpServlet {
                 : "User #" + userId + " not found.";
     }
 
-    /**
-     * Deletes a user and all their associated data.
-     * Cascades through every table that references {@code users(id)}.
-     */
+    // Deletes a user and all their associated data.
     private String removeUser(HttpServletRequest request) {
         int userId = parseId(request.getParameter("userId"));
         if (userId <= 0) {
             return "Invalid user ID.";
         }
 
-        /* Prevent an admin from deleting themselves. */
+        // Prevent an admin from deleting themselves.
         int currentUserId = SessionUtils.getCurrentUser(request.getSession()).getId();
         if (userId == currentUserId) {
             return "You cannot delete your own account.";
@@ -141,11 +138,8 @@ public class ModerationServlet extends HttpServlet {
                 : "User #" + userId + " not found.";
     }
 
-    /**
-     * Deletes a quiz and all its dependent rows.
-     * Cascades through: answers → questions → messages → reported_quizzes →
-     * quiz_attempts → quiz.
-     */
+    // Deletes a quiz and all its dependent rows.
+
     private String removeQuiz(HttpServletRequest request) {
         int quizId = parseId(request.getParameter("quizId"));
         if (quizId <= 0) {
@@ -220,11 +214,7 @@ public class ModerationServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Executes a single native SQL UPDATE or DELETE inside its own transaction.
-     *
-     * @return the number of affected rows
-     */
+    // Executes a single native SQL UPDATE or DELETE inside its own transaction.
     private static int executeUpdate(String sql, String paramName, int paramValue) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -248,17 +238,7 @@ public class ModerationServlet extends HttpServlet {
 
     /**
      * Builder for executing a chain of native DELETE statements inside a
-     * single transaction.  If any statement fails the entire batch is rolled
-     * back.
-     *
-     * <p>Usage:
-     * <pre>{@code
-     *   int rows = cascadeDelete(
-     *       "DELETE FROM child WHERE parent_id = :pid",
-     *       "DELETE FROM parent WHERE id = :pid"
-     *   ).with("pid", 42).execute();
-     * }</pre>
-     * </p>
+     * single transaction.  If any statement fails the entire batch is rolled back.
      */
     private static CascadeDelete cascadeDelete(String... sqlStatements) {
         return new CascadeDelete(sqlStatements);
@@ -277,10 +257,7 @@ public class ModerationServlet extends HttpServlet {
             return this;
         }
 
-        /**
-         * Runs all statements in a single transaction and returns the row count
-         * of the <em>last</em> statement (the root entity being deleted).
-         */
+        // Runs all statements in a single transaction and returns the row count
         int execute() {
             Session session = HibernateUtil.getSessionFactory().openSession();
             Transaction tx = null;

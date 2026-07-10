@@ -18,8 +18,6 @@ public class AchievementTag extends SimpleTagSupport {
     /**
      * Sets the user whose achievements should be displayed.
      * Called by the JSP container via the TLD attribute definition.
-     *
-     * @param user the user to display achievements for
      */
     public void setUser(User user) {
         this.user = user;
