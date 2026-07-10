@@ -41,9 +41,9 @@
         <label class="toggle-chip">
           <input type="checkbox" name="immediateCorrection"> Immediate correction
         </label>
-        <label class="toggle-chip">
-          <input type="checkbox" name="practiceMode"> Practice mode available
-        </label>
+<%--        <label class="toggle-chip">--%>
+<%--          <input type="checkbox" name="practiceMode"> Practice mode available--%>
+<%--        </label>--%>
       </div>
     </div>
 

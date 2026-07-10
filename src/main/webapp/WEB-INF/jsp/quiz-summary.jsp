@@ -50,13 +50,13 @@
         <% if (quiz.isRandomQuestions()) { %><span class="option-tag">Random order</span><% } %>
         <span class="option-tag"><%= quiz.isOnePage() ? "Single page" : "One question per page" %></span>
         <% if (quiz.isImmediateCorrection()) { %><span class="option-tag">Immediate correction</span><% } %>
-        <% if (quiz.isPracticeMode()) { %><span class="option-tag">Practice mode available</span><% } %>
+<%--        <% if (quiz.isPracticeMode()) { %><span class="option-tag">Practice mode available</span><% } %>--%>
       </div>
 
       <div class="cta-row">
         <a class="btn-stamp" href="<%= ctx %>/quiz/take?id=<%= quiz.getId() %>" style="text-decoration:none;">Take quiz</a>
         <% if (quiz.isPracticeMode()) { %>
-          <a class="btn-stamp btn-stamp--secondary" href="<%= ctx %>/quiz/take?id=<%= quiz.getId() %>&practice=true" style="text-decoration:none;">Practice mode</a>
+<%--          <a class="btn-stamp btn-stamp--secondary" href="<%= ctx %>/quiz/take?id=<%= quiz.getId() %>&practice=true" style="text-decoration:none;">Practice mode</a>--%>
         <% } %>
       </div>
 
