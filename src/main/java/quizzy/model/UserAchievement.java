@@ -42,13 +42,8 @@ public class UserAchievement {
     protected UserAchievement() {
     }
 
-    /**
-     * Constructs a UserAchievement. The earned-at timestamp is set to now.
-     *
-     * @param id          the database-assigned ID (0 for new records)
-     * @param user        the user who earned the achievement
-     * @param achievement the achievement that was earned
-     */
+    // Constructs a UserAchievement. The earned-at timestamp is set to now.
+
     public UserAchievement(int id, User user, Achievement achievement) {
         this.id = id;
         this.user = user;

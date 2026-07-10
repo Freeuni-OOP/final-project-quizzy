@@ -16,12 +16,7 @@ public class ReportedQuizDAO extends BaseDAO<ReportedQuiz> {
         super();
     }
 
-    /**
-     * Returns all reported quizzes filtered by their review status.
-     *
-     * @param status the report status to filter by
-     * @return list of matching reports
-     */
+    // Returns all reported quizzes filtered by their review status.
     public List<ReportedQuiz> findByStatus(ReportStatus status) {
         Session session = sessionFactory.openSession();
         try {
@@ -35,12 +30,7 @@ public class ReportedQuizDAO extends BaseDAO<ReportedQuiz> {
         }
     }
 
-    /**
-     * Returns all reports filed against a specific quiz.
-     *
-     * @param quizId the quiz ID
-     * @return list of reports for that quiz
-     */
+    // Returns all reports filed against a specific quiz.
     public List<ReportedQuiz> findByQuiz(int quizId) {
         Session session = sessionFactory.openSession();
         try {

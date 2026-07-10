@@ -16,12 +16,7 @@ public class UserAchievementDAO extends BaseDAO<UserAchievement> {
         super();
     }
 
-    /**
-     * Returns all achievements earned by a specific user.
-     *
-     * @param userId the user ID
-     * @return list of achievements earned by the user
-     */
+    // Returns all achievements earned by a specific user.
     public List<UserAchievement> findByUser(int userId) {
         Session session = sessionFactory.openSession();
         try {
@@ -34,13 +29,7 @@ public class UserAchievementDAO extends BaseDAO<UserAchievement> {
         }
     }
 
-    /**
-     * Checks whether a user has already earned a specific achievement.
-     *
-     * @param userId      the user ID
-     * @param achievement the achievement to check
-     * @return {@code true} if the user already has this achievement
-     */
+    // Checks whether a user has already earned a specific achievement.
     public boolean hasAchievement(int userId, Achievement achievement) {
         Session session = sessionFactory.openSession();
         try {

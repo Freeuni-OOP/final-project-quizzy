@@ -15,12 +15,7 @@ public class AnnouncementDAO extends BaseDAO<Announcement> {
         super();
     }
 
-    /**
-     * Returns the most recent announcements, ordered by creation date descending.
-     *
-     * @param limit the maximum number of announcements to return
-     * @return list of recent announcements, newest first
-     */
+    // Returns the most recent announcements, ordered by creation date descending.
     public List<Announcement> findRecent(int limit) {
         Session session = sessionFactory.openSession();
         try {
@@ -33,12 +28,7 @@ public class AnnouncementDAO extends BaseDAO<Announcement> {
         }
     }
 
-    /**
-     * Returns all announcements created by a specific admin.
-     *
-     * @param creatorId the admin user ID
-     * @return list of announcements by that admin
-     */
+    // Returns all announcements created by a specific admin.
     public List<Announcement> findByCreator(int creatorId) {
         Session session = sessionFactory.openSession();
         try {
