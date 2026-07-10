@@ -8,7 +8,7 @@
 |------|-----|-----------------|
 | M1 | Lalita Gigaia | Quiz Engine, Scoring, DB Schema, Question hierarchy |
 | M2 | Davit Chubabria | Authentication, Users, Friends, Mail, Session management |
-| M3 | Nanuka Altunashvili | Frontend, JSPs, CSS, UI Design |
+| M3 | Nanuka Altunashvili | Frontend, JSPs, UI Design,  Quiz creation/editing flow |
 | **M4** | **Giorgi Megreli** | **Achievements, Administration, Site Statistics, Reporting System** |
 
 
